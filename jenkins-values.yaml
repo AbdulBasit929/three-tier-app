@@ -1,0 +1,31 @@
+controller:
+  serviceType: LoadBalancer
+  resources:
+    requests:
+      cpu: 200m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+  adminPassword: admin123
+  installPlugins:
+    - kubernetes:latest
+    - workflow-aggregator:latest
+    - git:latest
+    - docker-workflow:latest
+    - github:latest
+
+persistence:
+  enabled: true
+  size: 10Gi
+  storageClass: standard-rwo
+
+agent:
+  enabled: true
+  podTemplates:
+    - name: docker
+      label: docker
+      containers:
+        - name: docker
+          image: docker:dind
+          privileged: true
