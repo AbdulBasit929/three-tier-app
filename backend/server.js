@@ -13,11 +13,9 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use('/api/messages', messageRoutes);
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log('MongoDB connected'))
-.catch(err => console.log('MongoDB error:', err));
+// ✅ FIXED: Removed deprecated options
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.log('MongoDB error:', err));
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -1,0 +1,17 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: my-ip-pool
+  namespace: metallb-system
+spec:
+  addresses:
+  - 10.128.0.100-10.128.0.110  # free IPs in your VM's subnet
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: my-l2-ad
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - my-ip-pool
