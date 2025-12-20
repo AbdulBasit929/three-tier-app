@@ -10,7 +10,7 @@ function ChatApp() {
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api/messages';
+  const API_URL = '/api/messages';
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -38,18 +38,25 @@ function ChatApp() {
   };
 
   const sendMessage = async (e) => {
-    e.preventDefault();
-    if (!text.trim()) return;
+  e.preventDefault();
+  if (!text.trim()) return;
 
-    try {
-      const response = await axios.post(API_URL, { text, user });
-      setMessages([...messages, response.data]);
-      setText('');
-    } catch (error) {
-      console.error('Error sending message:', error);
-      alert('Failed to send message. Please try again.');
-    }
-  };
+  console.log('Sending message:', { text, user }); // Debug log
+
+  try {
+    const response = await axios.post(API_URL, { 
+      text: text.trim(), 
+      user: user.trim() 
+    });
+    console.log('Response:', response.data); // Debug log
+    setMessages([...messages, response.data]);
+    setText('');
+  } catch (error) {
+    console.error('Error sending message:', error);
+    console.error('Error response:', error.response?.data); // More details
+    alert(`Failed to send message: ${error.response?.data?.message || error.message}`);
+  }
+};
 
   const handleUserSubmit = (e) => {
     e.preventDefault();
